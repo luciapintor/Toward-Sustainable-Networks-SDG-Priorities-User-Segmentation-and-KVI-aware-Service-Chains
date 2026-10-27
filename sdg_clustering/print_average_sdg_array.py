@@ -1,18 +1,18 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 
-def print_average_sdg_array(df, clustering_method, show_plots=False, show_full_plots=False, font="Times New Roman"):
+def print_average_sdg_array(df, clustering_method, show_plots=False, show_full_plots=False, font="Times New Roman", result_folder="results"):
     clusters = df["Cluster"]
     cluster_counts = pd.Series(clusters).value_counts()
     print("Number of points in each cluster:")
     print(cluster_counts)
     
-    plot_cluster_average_heatmap(df, clustering_method, show_plots=show_plots, font=font)
+    plot_cluster_average_heatmap(df, clustering_method, show_plots=show_plots, font=font, result_folder=result_folder)
 
-    plot_cluster_barplots(df, clustering_method, show_full_plots=show_full_plots, font=font)
+    plot_cluster_barplots(df, clustering_method, show_full_plots=show_full_plots, font=font, result_folder=result_folder)
     
             
-def plot_cluster_average_heatmap(df, clustering_method, show_plots=False, font="Times New Roman"):
+def plot_cluster_average_heatmap(df, clustering_method, show_plots=False, font="Times New Roman", result_folder="results"):
     """
     This function creates a heatmap of the average SDG arrays for each cluster of the dataframe df.
 
@@ -47,14 +47,14 @@ def plot_cluster_average_heatmap(df, clustering_method, show_plots=False, font="
                 
     plt.rcParams["font.family"] = font
         
-    plt.savefig(f"results\{clustering_method}_SDG_avg_preference.png", dpi=300, bbox_inches="tight")
+    plt.savefig(f"{result_folder}/{clustering_method}_SDG_avg_preference.png", dpi=300, bbox_inches="tight")
     
     if show_plots:
         plt.show()
     else:
         plt.close()
         
-def plot_cluster_barplots(df, clustering_method, show_full_plots=False, font="Times New Roman"):
+def plot_cluster_barplots(df, clustering_method, show_full_plots=False, font="Times New Roman", result_folder="results"):
     """
     This function creates bar plots of the average SDG arrays for each cluster of the dataframe df.
 
@@ -95,7 +95,7 @@ def plot_cluster_barplots(df, clustering_method, show_full_plots=False, font="Ti
             plt.rcParams["font.family"] = font
                 
             # save the figure
-            plt.savefig(f"results\{clustering_method}_cluster_{cluster_id}.png", dpi=300, bbox_inches="tight")
+            plt.savefig(f"{result_folder}\{clustering_method}_cluster_{cluster_id}.png", dpi=300, bbox_inches="tight")
     
             if show_full_plots: 
                 plt.show()

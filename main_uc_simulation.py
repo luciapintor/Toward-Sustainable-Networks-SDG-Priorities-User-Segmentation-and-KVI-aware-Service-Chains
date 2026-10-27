@@ -54,7 +54,7 @@ kvi_data = {
 }
 
 cost_noise = 0.10                           # std of the multiplicative cost noise
- 
+cost_corr = 0.4                             # extra cost per unit of sustainability score 
  
 # ---------------------------------------------------------------------------
 # Marketplace generation
@@ -62,7 +62,7 @@ cost_noise = 0.10                           # std of the multiplicative cost noi
 
 rng = np.random.default_rng(seed)
 
-marketplace = generate_marketplace(rng, stages=stages, kvi_data=kvi_data, cost_noise=cost_noise)
+marketplace = generate_marketplace(rng, stages=stages, kvi_data=kvi_data, cost_noise=cost_noise, cost_corr=cost_corr)
 chains = candidate_chains(marketplace=marketplace, kvi_data=kvi_data)
 
 records = []

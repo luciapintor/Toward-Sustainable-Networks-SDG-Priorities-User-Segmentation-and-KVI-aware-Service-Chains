@@ -9,7 +9,7 @@ from sdg_clustering.profile_users import profile_users
 from sdg_clustering.analyze_economic_propension import analyze_economic_propension
 
 def calculate_w(xlsx_file, sheet_name_sdg, sheet_support_survey, clustering_method, n_clusters, eps, min_samples, 
-                replace_negatives=True, show_plots=False, show_full_plots=False):
+                replace_negatives=True, show_plots=False, show_full_plots=False, result_folder="results"):
     """This function reads the SDG and support survey data from an Excel file, 
     prepares the data, performs clustering on the SDG arrays, analyzes the economic propension, 
     and profiles the users based on the clustering results.
@@ -25,6 +25,7 @@ def calculate_w(xlsx_file, sheet_name_sdg, sheet_support_survey, clustering_meth
         replace_negatives (bool, optional): _description_. Defaults to True.
         show_plots (bool, optional): _description_. Defaults to False.
         show_full_plots (bool, optional): _description_. Defaults to False.
+        result_folder
     """
     # reading the sheets of the xlsx file with pandas
     sdg_df = pd.read_excel(xlsx_file, sheet_name=sheet_name_sdg)
@@ -36,15 +37,16 @@ def calculate_w(xlsx_file, sheet_name_sdg, sheet_support_survey, clustering_meth
     # clustering the SDG arrays and printing the average SDG array for each cluster
     df_sdg = sdg_clustering(df_sdg, clustering_method=clustering_method, n_clusters=n_clusters, 
                             eps=eps, min_samples=min_samples, replace_negatives=replace_negatives, 
-                            show_plots=show_plots, show_full_plots=show_full_plots)
+                            show_plots=show_plots, show_full_plots=show_full_plots, result_folder=result_folder)
 
 
     # studying the propension to pay
-    analyze_economic_propension(df_support, df_sdg["Cluster"] )
+    analyze_economic_propension(df_support, df_sdg["Cluster"], result_folder=result_folder )
 
-    w = profile_users(df=df_sdg)
+    return profile_users(df=df_sdg) # w
 
-def sdg_clustering(df, clustering_method="K-Means", n_clusters=5, eps=0.3, min_samples=3, replace_negatives=True, show_plots=False, show_full_plots=False):
+def sdg_clustering(df, clustering_method="K-Means", n_clusters=5, eps=0.3, min_samples=3, replace_negatives=True, 
+                   show_plots=False, show_full_plots=False, result_folder="results"):
     """
     Clusters the SDG DataFrame.
     """
@@ -54,12 +56,12 @@ def sdg_clustering(df, clustering_method="K-Means", n_clusters=5, eps=0.3, min_s
 
     if clustering_method == "DBSCAN":
         # using DBSCAN to cluster the SDG arrays
-        df = clustering_DBSCAN(eps=eps, min_samples=min_samples, X=deepcopy(df))
+        df = clustering_DBSCAN(eps=eps, min_samples=min_samples, X=deepcopy(df), result_folder=result_folder)
     elif clustering_method == "K-Means":
         # using K-Means to cluster the SDG arrays
-        df = clustering_KMEANS(n_clusters=n_clusters, X=deepcopy(df))
+        df = clustering_KMEANS(n_clusters=n_clusters, X=deepcopy(df), result_folder=result_folder)
         
-    print_average_sdg_array(df, clustering_method=clustering_method, show_plots=show_plots, show_full_plots=show_full_plots)
+    print_average_sdg_array(df, clustering_method=clustering_method, show_plots=show_plots, show_full_plots=show_full_plots, result_folder=result_folder)
 
     return df
 

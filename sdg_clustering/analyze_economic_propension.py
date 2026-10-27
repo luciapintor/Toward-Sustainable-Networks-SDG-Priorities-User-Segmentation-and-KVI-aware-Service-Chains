@@ -1,20 +1,25 @@
 import matplotlib.pyplot as plt
+import os
 
-def analyze_economic_propension(df_support, cluster_labels, fontsize_title=24, fontsize_general=20):
+def analyze_economic_propension(df_support, cluster_labels, fontsize_title=24, fontsize_general=20, result_folder="results"):
     """
     Analyzes the economic propension data.
     """
     # merging the cluster labels with the support DataFrame
     df_support.insert(0, "Cluster", cluster_labels)
     
+    # create results folder if it does not exists
+    if result_folder not in os.listdir():
+        os.mkdir(result_folder)
+    
     # save the DataFrame with cluster labels to a new Excel file
-    df_support.to_excel("results/support_with_clusters.xlsx", index=False)
+    df_support.to_excel(f"{result_folder}/support_with_clusters.xlsx", index=False)
     
     # for each cluster, calculate the average of each economic propension column
     cluster_means = df_support.groupby("Cluster").mean()
     
     # save the cluster means to a new Excel file
-    cluster_means.to_excel("results/cluster_means.xlsx", index=True)
+    cluster_means.to_excel(f"{result_folder}/cluster_means.xlsx", index=True)
     
     plt.figure(figsize=(10, 6))
     
@@ -29,7 +34,7 @@ def analyze_economic_propension(df_support, cluster_labels, fontsize_title=24, f
     plt.legend(title="Cluster", title_fontsize=fontsize_general, fontsize=fontsize_general)
     plt.rcParams["font.family"] = "Times New Roman"
     
-    save_path = "results/payment_propensity_by_cluster.png"
+    save_path = f"{result_folder}/payment_propensity_by_cluster.png"
     plt.savefig(save_path)
     plt.close()
     

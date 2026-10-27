@@ -1,7 +1,7 @@
 import pandas as pd
 from sklearn.cluster import DBSCAN
 
-def clustering_DBSCAN(eps=0.3, min_samples=3, X=None):
+def clustering_DBSCAN(eps=0.3, min_samples=3, X=None, result_folder="results"):
     """
     Function to perform DBSCAN clustering on the SDG arrays.
     
@@ -23,7 +23,7 @@ def clustering_DBSCAN(eps=0.3, min_samples=3, X=None):
 
     # saving the results to an Excel file
     X.insert(0, "Cluster", clusters)  # Insert the cluster labels as the first column
-    output_file = "results/sdg_clusters_dbscan.xlsx"
+    output_file = f"{result_folder}/sdg_clusters_dbscan.xlsx"
     X.to_excel(output_file, index=False)
     
     return X

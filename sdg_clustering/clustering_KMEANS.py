@@ -2,7 +2,7 @@ import pandas as pd
 from sklearn.preprocessing import normalize
 from sklearn.cluster import KMeans
 
-def clustering_KMEANS(X=None, n_clusters=3, random_state=42, n_init=50):
+def clustering_KMEANS(X=None, n_clusters=3, random_state=42, n_init=50, result_folder="results"):
     """
     Function to perform K-Means clustering on the SDG arrays.
 
@@ -26,7 +26,7 @@ def clustering_KMEANS(X=None, n_clusters=3, random_state=42, n_init=50):
 
     # saving the results to an Excel file
     X.insert(0, "Cluster", clusters)  # Insert the cluster labels as the first column
-    output_file = "results/sdg_clusters_kmeans.xlsx"
+    output_file = f"{result_folder}/sdg_clusters_kmeans.xlsx"
     X.to_excel(output_file, index=False)
     
     return X

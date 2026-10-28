@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-
+ 
 def generate_marketplace(rng, stages,  kvi_data, cost_noise, cost_corr):
     """
     This function creates a marketplaces of function service alternatives.
@@ -19,7 +19,7 @@ def generate_marketplace(rng, stages,  kvi_data, cost_noise, cost_corr):
                 else:
                     normalized.append(value)
             
-            score = np.mean([list(scores.values())])
+            score = np.mean(normalized)
             noise = rng.normal(1.0, cost_noise)
             cost = stages[s]["base_cost"] * (1.0 + cost_corr * score) * noise
             

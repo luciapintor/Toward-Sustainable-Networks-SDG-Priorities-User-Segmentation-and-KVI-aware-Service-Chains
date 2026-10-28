@@ -1,13 +1,14 @@
+
 import itertools
 import numpy as np
 import pandas as pd
-
+ 
 # ---------------------------------------------------------------------------
 # End-to-end aggregation (Section III-E)
 # ---------------------------------------------------------------------------
 def candidate_chains(marketplace, kvi_data):
     """Builds all candidate chains and their end-to-end KVIs s_{m,n} and cost E_m."""
-
+ 
     # find all the combinations of alternatives (each stage can appear only once in each combination)
     combos = [list(c) for c in itertools.product(*marketplace.groupby("stage")["id"].unique())]
     
@@ -62,12 +63,11 @@ def select_chain(chains, plan, kvi_data, mu=0.5):
         fallback = True
  
     return {
-        "chain": chains[m] ["ids"], "fallback": fallback,
+        "chain": chains[m]["ids"], "fallback": fallback,
         "n_feasible": int(feasible.sum()), "n_acceptable": int(acceptable.sum()),
         "n_admissible": int(admissible.sum()),
         "delta_E": delta_E[m], "delta_I": delta_I[m], "I": I[m], "I_baseline": I[b],
-        "kvis": chains[m]["aggregation"], 
-        "kvis_baseline": chains[b]["aggregation"],
+        "kvis": chains[m]["aggregation"], "kvis_baseline": chains[b]["aggregation"],
     }
  
 # ---------------------------------------------------------------------------
@@ -82,4 +82,3 @@ def pi_function(delta_i, points):
     x = np.array([0.0] + sorted(points))
     y = np.array([0.0] + [points[p] for p in sorted(points)])
     return np.where(delta_i <= 0, 0.0, np.interp(delta_i, x, y))
- 

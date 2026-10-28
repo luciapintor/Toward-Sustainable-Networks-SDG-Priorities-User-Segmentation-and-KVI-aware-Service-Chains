@@ -11,11 +11,10 @@ The implementation follows Section III of the paper:
     DeltaI_m improvement w.r.t. the baseline chain (Eq. dIm)
     acceptability: DeltaE_m <= pi(DeltaI_m) (Eq. accept)
 """
-
+import os
 import numpy as np
 
-from simulation.generate_marketplace import generate_marketplace
-from simulation.chains import candidate_chains, select_chain
+from simulation.monte_carlo import *
 
 # ---------------------------------------------------------------------------
 # Configuration use case simulation
@@ -43,6 +42,7 @@ plans = {
  
 mu = 0.5                           # trade-off sustainability / cost in R(S_m)
 seed = 42
+n_marketplaces = 1000              # Monte Carlo repetitions
 
 # Synthetic ranges for the marketplace entries
 kvi_data = {
@@ -56,21 +56,23 @@ kvi_data = {
 cost_noise = 0.10                           # std of the multiplicative cost noise
 cost_corr = 0.4                             # extra cost per unit of sustainability score 
  
+result_folder = "results"
+ 
 # ---------------------------------------------------------------------------
-# Marketplace generation
+# Monte Carlo simulation
 # ---------------------------------------------------------------------------
+os.makedirs(result_folder, exist_ok=True)
 
 rng = np.random.default_rng(seed)
-
-marketplace = generate_marketplace(rng, stages=stages, kvi_data=kvi_data, cost_noise=cost_noise, cost_corr=cost_corr)
-chains = candidate_chains(marketplace=marketplace, kvi_data=kvi_data)
-
-records = []
-
-for name, plan in plans.items():
-    res = select_chain(chains, plan, kvi_data, mu=mu)
-    res.update({"plan": name})
-    records.append(res)
-    
-for r in records:
-    print(r)
+ 
+results = run_monte_carlo(rng, n_marketplaces=n_marketplaces, stages=stages, kvi_data=kvi_data,
+                          plans=plans, mu=mu, cost_noise=cost_noise, cost_corr=cost_corr)
+summary, different_chains = summarize(results, kvi_data=kvi_data, plans=plans)
+ 
+# saving the results
+results.to_excel(f"{result_folder}/uc_simulation_runs.xlsx", index=False)
+summary.to_excel(f"{result_folder}/uc_simulation_summary.xlsx")
+ 
+pd.set_option("display.width", 200)
+print(summary.round(3).T)
+print(f"\nShare of marketplaces where the plans select different chains: {different_chains:.1%}")

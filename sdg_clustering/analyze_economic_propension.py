@@ -1,5 +1,4 @@
 import matplotlib.pyplot as plt
-import os
 
 def analyze_economic_propension(df_support, cluster_labels, fontsize_title=24, fontsize_general=20, result_folder="results"):
     """
@@ -7,10 +6,6 @@ def analyze_economic_propension(df_support, cluster_labels, fontsize_title=24, f
     """
     # merging the cluster labels with the support DataFrame
     df_support.insert(0, "Cluster", cluster_labels)
-    
-    # create results folder if it does not exists
-    if result_folder not in os.listdir():
-        os.mkdir(result_folder)
     
     # save the DataFrame with cluster labels to a new Excel file
     df_support.to_excel(f"{result_folder}/support_with_clusters.xlsx", index=False)

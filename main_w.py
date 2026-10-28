@@ -1,3 +1,4 @@
+import os
 from sdg_clustering.calculate_w import calculate_w
 
 # ---------------------------------------------------------------------------
@@ -17,6 +18,10 @@ replace_negatives = True
 
 show_plots = False
 show_full_plots = False
+
+# create results folder if it does not exists
+if result_folder not in os.listdir():
+    os.mkdir(result_folder)
 
 w = calculate_w(xlsx_file=xlsx_file, sheet_name_sdg=sheet_name_sdg, sheet_support_survey=sheet_support_survey,
                 clustering_method=clustering_method, n_clusters=n_clusters, eps=eps, min_samples=min_samples, 

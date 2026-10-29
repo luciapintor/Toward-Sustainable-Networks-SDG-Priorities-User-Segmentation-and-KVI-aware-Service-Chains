@@ -27,15 +27,24 @@ stages = {
 
 # Service plans: weights from profile_users (cluster mean profile, dominant SDG = 10),
 # willingness to pay from Table tab:sdg_clusters (lower bound encoding, % -> fraction)
+#
+# Targets (requirements) v: 0.5 on the dominant KVI of each plan, 0.25 on the others.
+# These values result from a trade-off between the strictness of the requirements and the
+# availability of feasible chains: since provider-level KVIs are aggregated with the minimum,
+# a single non-compliant provider excludes the whole chain. With the previous targets
+# (0.6 on the dominant KVI, 0.4 on the others), no candidate chain satisfied all the targets
+# in about three marketplaces out of four.
 plans = {
     "A": { #  (Health, cl. 4)
         "w": {"HS": 10.0, "Water": 1.6, "RE": 1.1, "GHG": 0.4, "ACT": 0.8},        # weights
-        "v": {"HS": 0.60, "Water": 0.40, "RE": 0.40, "GHG": 0.40, "ACT": 0.40},    # requirements
+        # "v": {"HS": 0.60, "Water": 0.40, "RE": 0.40, "GHG": 0.40, "ACT": 0.40},  # previous requirements
+        "v": {"HS": 0.50, "Water": 0.25, "RE": 0.25, "GHG": 0.25, "ACT": 0.25},    # requirements
         "pi": {0.1: 0.074, 0.2: 0.120, 0.5: 0.177},                                # willingness to pay
     },
     "B": { #  (Climate, cl. 1)
         "w": {"HS": 0.6, "Water": 1.9, "RE": 0.7, "GHG": 10.0, "ACT": 1.0},
-        "v": {"HS": 0.40, "Water": 0.40, "RE": 0.40, "GHG": 0.60, "ACT": 0.40},
+        # "v": {"HS": 0.40, "Water": 0.40, "RE": 0.40, "GHG": 0.60, "ACT": 0.40},  # previous requirements
+        "v": {"HS": 0.25, "Water": 0.25, "RE": 0.25, "GHG": 0.50, "ACT": 0.25},    # requirements
         "pi": {0.1: 0.059, 0.2: 0.103, 0.5: 0.192},
     },
 }

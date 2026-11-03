@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 
-def analyze_economic_propension(df_support, cluster_labels, fontsize_title=24, fontsize_general=20, result_folder="results"):
+def analyze_economic_propension(df_support, cluster_labels, fontsize_title=24, fontsize_general=20, result_folder="results", fontfamily="Times New Roman"):
     """
     Analyzes the economic propension data.
     """
@@ -21,11 +21,11 @@ def analyze_economic_propension(df_support, cluster_labels, fontsize_title=24, f
     for cluster in cluster_means.index:
         plt.plot(cluster_means.columns, cluster_means.loc[cluster], marker='o', label=f'Cluster {cluster}')
 
-    plt.xlabel("Sustainability Improvement Percentage", fontsize=fontsize_general, fontfamily="Times New Roman")
-    plt.ylabel("Payment Percentage Increment", fontsize=fontsize_general, fontfamily="Times New Roman")
-    plt.title("Payment Propensity by Cluster", fontsize=fontsize_title, fontfamily="Times New Roman")
-    plt.xticks(ticks=[0, 1, 2], labels=["10", "20", "50"], fontsize=fontsize_general, fontfamily="Times New Roman")
-    plt.yticks(fontsize=fontsize_general, fontfamily="Times New Roman")
+    plt.xlabel("Sustainability Improvement Percentage", fontsize=fontsize_general, fontfamily=fontfamily)
+    plt.ylabel("Payment Percentage Increment", fontsize=fontsize_general, fontfamily=fontfamily)
+    plt.title("Payment Propensity by Cluster", fontsize=fontsize_title, fontfamily=fontfamily)
+    plt.xticks(ticks=[0, 1, 2], labels=["10", "20", "50"], fontsize=fontsize_general, fontfamily=fontfamily)
+    plt.yticks(fontsize=fontsize_general, fontfamily=fontfamily)
     plt.legend(title="Cluster", title_fontsize=fontsize_general, fontsize=fontsize_general)
     plt.rcParams["font.family"] = "Times New Roman"
     

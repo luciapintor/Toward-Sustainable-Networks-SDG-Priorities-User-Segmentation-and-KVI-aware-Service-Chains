@@ -43,7 +43,7 @@ def plot_cluster_average_heatmap(df, clustering_method, show_plots=False, font_f
                         color="white" if M[i, j] > M.max() * 0.6 else "black")
 
     fig.colorbar(im, ax=ax, shrink=1.2, label="Mean preference score")
-    ax.set_title(f"SDG preference profile by cluster ({clustering_method})", fontsize=18, fontfamily=font_family)
+    # ax.set_title(f"SDG preference profile by cluster ({clustering_method})", fontsize=18, fontfamily=font_family)
                 
     plt.rcParams["font.family"] = font_family
         

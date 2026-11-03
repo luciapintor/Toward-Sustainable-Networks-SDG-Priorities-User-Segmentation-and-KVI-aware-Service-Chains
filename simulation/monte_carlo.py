@@ -76,7 +76,7 @@ def summarize(results, kvi_data, plans):
             row[f"gain_{kvi}_no_fallback"] = (ok[f"s_{kvi}"] - ok[f"base_{kvi}"]).mean()
         rows.append(row)
 
-    summary = pd.DataFrame(rows).set_index("plan")
+    summary = pd.DataFrame(rows)
 
     # share of marketplaces where the plans select different chains
     pivot = results.pivot(index="run", columns="plan", values="chain")

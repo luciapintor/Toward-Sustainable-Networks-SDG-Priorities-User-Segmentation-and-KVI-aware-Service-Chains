@@ -15,6 +15,7 @@ import os
 import numpy as np
 
 from simulation.monte_carlo import *
+from simulation.plot_results import plot_results
 
 # ---------------------------------------------------------------------------
 # Configuration use case simulation
@@ -36,12 +37,16 @@ stages = {
 # in about three marketplaces out of four.
 plans = {
     "A": { #  (Health, cl. 4)
+        "label": "Plan A (Health)",
+        "color": "#2a78d6",
         "w": {"HS": 10.0, "Water": 1.6, "RE": 1.1, "GHG": 0.4, "ACT": 0.8},        # weights
         # "v": {"HS": 0.60, "Water": 0.40, "RE": 0.40, "GHG": 0.40, "ACT": 0.40},  # previous requirements
         "v": {"HS": 0.50, "Water": 0.25, "RE": 0.25, "GHG": 0.25, "ACT": 0.25},    # requirements
         "pi": {0.1: 0.074, 0.2: 0.120, 0.5: 0.177},                                # willingness to pay
     },
     "B": { #  (Climate, cl. 1)
+        "label": "Plan B (Climate)",
+        "color": "#eb6834",
         "w": {"HS": 0.6, "Water": 1.9, "RE": 0.7, "GHG": 10.0, "ACT": 1.0},
         # "v": {"HS": 0.40, "Water": 0.40, "RE": 0.40, "GHG": 0.60, "ACT": 0.40},  # previous requirements
         "v": {"HS": 0.25, "Water": 0.25, "RE": 0.25, "GHG": 0.50, "ACT": 0.25},    # requirements
@@ -66,6 +71,10 @@ cost_noise = 0.10                           # std of the multiplicative cost noi
 cost_corr = 0.4                             # extra cost per unit of sustainability score 
  
 result_folder = "results"
+kvi_gain_file = f"{result_folder}/uc_simulation_kvi_gain.png" 
+premium_file = f"{result_folder}/uc_simulation_premium.png"
+runs_file = f"{result_folder}/uc_simulation_runs.xlsx"
+summary_file = f"{result_folder}/uc_simulation_summary.xlsx"
  
 # ---------------------------------------------------------------------------
 # Monte Carlo simulation
@@ -79,9 +88,11 @@ results = run_monte_carlo(rng, n_marketplaces=n_marketplaces, stages=stages, kvi
 summary, different_chains = summarize(results, kvi_data=kvi_data, plans=plans)
  
 # saving the results
-results.to_excel(f"{result_folder}/uc_simulation_runs.xlsx", index=False)
-summary.to_excel(f"{result_folder}/uc_simulation_summary.xlsx")
+results.to_excel(runs_file, index=False)
+summary.to_excel(summary_file, index=False)
  
 pd.set_option("display.width", 200)
 print(summary.round(3).T)
 print(f"\nShare of marketplaces where the plans select different chains: {different_chains:.1%}")
+
+plot_results(plans=plans, runs_file=runs_file, summary_file=summary_file, out_kvi_gain=kvi_gain_file, out_premium=premium_file)

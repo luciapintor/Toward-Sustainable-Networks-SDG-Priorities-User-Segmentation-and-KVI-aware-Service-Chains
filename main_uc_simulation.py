@@ -16,7 +16,6 @@ import numpy as np
 
 from simulation.monte_carlo import *
 from simulation.plot_results import plot_results
-from simulation.example import example_marketplace
 
 # ---------------------------------------------------------------------------
 # Configuration use case simulation

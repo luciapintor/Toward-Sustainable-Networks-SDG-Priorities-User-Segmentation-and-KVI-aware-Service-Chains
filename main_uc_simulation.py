@@ -22,9 +22,9 @@ from simulation.example import example_marketplace
 # Configuration use case simulation
 # ---------------------------------------------------------------------------
 stages = {
-    "1.Transport and access":     {"base_cost": 1.0, "alternatives": 2}, 
-    "2.Edge rendering":           {"base_cost": 1.5, "alternatives": 3}, 
-    "3.Transcoding and delivery": {"base_cost": 1.2, "alternatives": 3}
+    "1.Access network function": {"base_cost": 1.0, "alternatives": 2},
+    "2.Rendering function":      {"base_cost": 1.5, "alternatives": 3},
+    "3.vCDN function":           {"base_cost": 1.2, "alternatives": 3}
     }
 
 # Service plans: weights from profile_users (cluster mean profile, dominant SDG = 10),
